@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:medcare_desk/ui/screen/home_screen_sections/patient_section.dart';
+import 'package:medcare_desk/ui/screen/login_screen.dart';
 
 import '../widgets/appointment/doctor_card.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/drawer_button.dart';
+import 'home_screen_sections/appointment_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,103 +14,37 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   String? selectedValue;
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: Text(
-              'Tokens',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              ),
-            ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          tabController.index == 0 ? 'Tokens' : 'Patients',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30),
-            child: Material(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                child: DropdownButton(
-                  borderRadius: BorderRadius.circular(10),
-                  underline: const SizedBox(),
-                  hint: const Text(
-                    'Department',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: '1',
-                      child: Text('One'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2',
-                      child: Text('Two'),
-                    ),
-                    DropdownMenuItem(
-                      value: '3',
-                      child: Text('Three'),
-                    ),
-                    DropdownMenuItem(
-                      value: '4',
-                      child: Text('Four'),
-                    )
-                  ],
-                  value: selectedValue,
-                  onChanged: (value) {
-                    selectedValue = value;
-
-                    setState(() {});
-                  },
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
-          Expanded(
-            child: SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    children: List.generate(
-                      20,
-                      (index) => const Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: DoctorCard(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+        ),
+      ),
+      body: TabBarView(
+        controller: tabController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          AppointmentSection(),
+          PatientSection(),
         ],
       ),
       drawer: Drawer(
@@ -114,51 +52,90 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Material(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.blue,
-                child: const Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 20),
-                  child: Center(
-                    child: Text(
-                      'Appoinments',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
+              child: DrawerButton(
+                label: "Appointments",
+                isSelected: tabController.index == 0,
+                onPressed: () {
+                  tabController.animateTo(0);
+
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: DrawerButton(
+                label: "Patients",
+                isSelected: tabController.index == 1,
+                onPressed: () {
+                  tabController.animateTo(1);
+
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: DrawerButton(
+                label: "Logout",
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        child: SizedBox(
+                          width: 300,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Do you really want to logout?",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  CustomButton(
+                                    label: "YES",
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginScreen()));
+                                    },
+                                    buttonColor: Colors.blue,
+                                    elevation: 2,
+                                  ),
+                                  CustomButton(
+                                    label: "NO",
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    buttonColor: Colors.blue,
+                                    elevation: 2,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Text(
-                'Patient Registration',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Text(
-                'Doctors',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
+                  );
+                },
               ),
             ),
           ],

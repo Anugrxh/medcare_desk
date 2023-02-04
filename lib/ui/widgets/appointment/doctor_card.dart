@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../custom_button.dart';
@@ -62,7 +61,131 @@ class DoctorCard extends StatelessWidget {
                   ),
                   CustomButton(
                     label: "Add",
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15),
+                            child: SizedBox(
+                              width: 600,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Doctor Info",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Divider(
+                                    thickness: 2,
+                                    color: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "patient",
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  CustomButton(
+                                      label: "Select",
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 15),
+                                              child: SizedBox(
+                                                width: 600,
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    TextFormField(
+                                                      decoration:
+                                                          InputDecoration(
+                                                        suffixIcon: const Icon(
+                                                            Icons.search),
+                                                        labelText: 'Search',
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          borderSide:
+                                                              const BorderSide(),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      buttonColor: Colors.blue,
+                                      elevation: 2),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Divider(
+                                    thickness: 2,
+                                    color: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "time",
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  CustomButton(
+                                      label: "Today 9pm",
+                                      onPressed: () {},
+                                      buttonColor: Colors.blue,
+                                      elevation: 2),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  CustomButton(
+                                      label: "Date",
+                                      onPressed: () {},
+                                      buttonColor: Colors.blue,
+                                      elevation: 2),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                     icon: Icons.add,
                   )
                 ],

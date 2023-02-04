@@ -1,6 +1,9 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:medcare_desk/ui/screen/home_screen.dart';
+
+import '../widgets/custom_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -30,8 +33,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                 ),
                 SizedBox(
-                  height: 50
-                  ,
+                  height: 50,
                 ),
                 SizedBox(
                   width: 300,
@@ -66,19 +68,14 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                ElevatedButton(
+                CustomButton(
+                  label: "Login",
                   onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    var _formKey;
-                    if (_formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
-                  child: const Text('Submit'),
+                  buttonColor: Colors.blue,
+                  elevation: 2,
                 ),
               ],
             ),

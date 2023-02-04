@@ -35,6 +35,7 @@ class CustomButton extends StatelessWidget {
             bottom: 10,
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 label,
