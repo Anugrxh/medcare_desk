@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medcare_desk/ui/screen/home_screen.dart';
 import 'package:medcare_desk/ui/screen/login_screen.dart';
 
 void main() {
