@@ -206,6 +206,24 @@ class PatientCard extends StatelessWidget {
                   "Sex:",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomButton(label: "print", onPressed: () {}),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CustomButton(label: "edit", onPressed: () {}),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CustomButton(label: "delete", onPressed: () {}),
+                      ],
+                    )
+                  ],
+                )
               ],
             ),
           ),
