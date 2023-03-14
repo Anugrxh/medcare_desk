@@ -12,8 +12,8 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
     on<PatientEvent>((event, emit) async {
       emit(PatientLoadingState());
 
-      SupabaseClient supabaseClient = Supabase.instance.client;
-      SupabaseQueryBuilder queryTable = supabaseClient.from('patients');
+      SupabaseQueryBuilder queryTable =
+          Supabase.instance.client.from('patients');
 
       try {
         if (event is CreatePatientEvent) {

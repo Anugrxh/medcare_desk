@@ -20,6 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginSuccessState());
       } catch (e, s) {
         log("$e\n$s");
+
         emit(LoginFailureState());
       }
     });
