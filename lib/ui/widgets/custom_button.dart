@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+
+import 'custom_card.dart';
 
 class CustomButton extends StatelessWidget {
   final String label;
@@ -7,6 +8,7 @@ class CustomButton extends StatelessWidget {
   final IconData? icon;
   final Color? buttonColor, iconColor, labelColor;
   final double elevation;
+  final bool isLoading;
   const CustomButton({
     Key? key,
     required this.label,
@@ -16,45 +18,59 @@ class CustomButton extends StatelessWidget {
     this.iconColor,
     this.labelColor,
     this.elevation = 0,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return CustomCard(
       color: buttonColor ?? Colors.white,
-      elevation: elevation,
-      borderRadius: BorderRadius.circular(10),
       child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(10),
+        onTap: isLoading ? null : onPressed,
+        borderRadius: BorderRadius.circular(5),
         child: Padding(
           padding: EdgeInsets.only(
             left: 20,
             right: icon != null ? 10 : 20,
-            top: 10,
-            bottom: 10,
+            top: 12.5,
+            bottom: 12.5,
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label,
-                style: Theme.of(context).textTheme.button?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: labelColor,
-                    ),
-              ),
-              SizedBox(
-                width: icon != null ? 5 : 0,
-              ),
-              icon != null
-                  ? Icon(
-                      icon!,
-                      color: iconColor,
-                      size: 20,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: icon != null
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.center,
+            children: isLoading
+                ? [
+                    SizedBox(
+                      width: 50,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: LinearProgressIndicator(
+                          color: labelColor,
+                          backgroundColor: labelColor?.withOpacity(.2),
+                        ),
+                      ),
                     )
-                  : const SizedBox()
-            ],
+                  ]
+                : [
+                    Text(
+                      label,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: labelColor,
+                          ),
+                    ),
+                    SizedBox(
+                      width: icon != null ? 5 : 0,
+                    ),
+                    icon != null
+                        ? Icon(
+                            icon!,
+                            color: iconColor,
+                            size: 20,
+                          )
+                        : const SizedBox()
+                  ],
           ),
         ),
       ),
