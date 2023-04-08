@@ -166,25 +166,7 @@ class DoctorCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const Divider(
-                height: 15,
-                color: Color.fromARGB(66, 176, 176, 176),
-              ),
-              Text(
-                'Email',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Colors.black45,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                doctorDetails['email'],
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+
               const Divider(
                 height: 15,
                 color: Color.fromARGB(66, 176, 176, 176),

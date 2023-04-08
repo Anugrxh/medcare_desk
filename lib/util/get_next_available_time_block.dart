@@ -1,17 +1,46 @@
 import 'package:flutter/material.dart';
 
-TimeOfDay? getNextAvailableTimeBlock(
-    TimeOfDay startTime, TimeOfDay endTime, int numberOfSelectedBlocks) {
+TimeOfDay? getNextAvailableTimeBlock(DateTime date, TimeOfDay startTime,
+    TimeOfDay endTime, int numberOfSelectedBlocks) {
   int minutes = numberOfSelectedBlocks * 10;
 
-  DateTime possibleAvailableBlock =
-      DateTime(2000, 1, 1, startTime.hour, startTime.minute)
-          .add(Duration(minutes: minutes));
+  DateTime currentDateTime = DateTime.now();
 
-  DateTime limit = DateTime(2000, 1, 1, endTime.hour, endTime.minute);
+  DateTime possibleAvailableBlock = DateTime(
+    date.year,
+    date.month,
+    date.day,
+    startTime.hour,
+    startTime.minute,
+  ).add(Duration(minutes: minutes));
+
+  DateTime limit = DateTime(
+    date.year,
+    date.month,
+    date.day,
+    endTime.hour,
+    endTime.minute,
+  );
 
   if (limit.difference(possibleAvailableBlock).inMinutes >= 10) {
-    return TimeOfDay.fromDateTime(possibleAvailableBlock);
+    if (date.year == currentDateTime.year &&
+        date.month == currentDateTime.month &&
+        date.day == currentDateTime.day) {
+      while (possibleAvailableBlock.isBefore(currentDateTime) &&
+          possibleAvailableBlock.isBefore(limit)) {
+        possibleAvailableBlock =
+            possibleAvailableBlock.add(const Duration(minutes: 10));
+      }
+
+      if (possibleAvailableBlock.isAfter(currentDateTime) &&
+          limit.difference(possibleAvailableBlock).inMinutes >= 10) {
+        return TimeOfDay.fromDateTime(possibleAvailableBlock);
+      } else {
+        return null;
+      }
+    } else {
+      return TimeOfDay.fromDateTime(possibleAvailableBlock);
+    }
   } else {
     return null;
   }

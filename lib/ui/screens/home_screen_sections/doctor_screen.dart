@@ -87,25 +87,6 @@ class _DoctorScreenState extends State<DoctorScreen> {
                               search();
                             },
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          CustomButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (_) => BlocProvider<DoctorBloc>.value(
-                                  value: doctorBloc,
-                                  child: const AddEditDoctorDialog(),
-                                ),
-                              );
-                            },
-                            label: 'Add Doctor',
-                            icon: Icons.add,
-                            iconColor: Colors.white,
-                            labelColor: Colors.white,
-                            buttonColor: Colors.blue,
-                          ),
                         ],
                       ),
                     ),

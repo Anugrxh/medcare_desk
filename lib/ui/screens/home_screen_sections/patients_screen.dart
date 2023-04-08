@@ -10,7 +10,9 @@ import '../../widgets/patient/add_patient_dialog.dart';
 import '../../widgets/patient/patient_card.dart';
 
 class PatientsScreen extends StatefulWidget {
-  const PatientsScreen({super.key});
+  final bool selectMode;
+  final Function(Map<String, dynamic>)? onSelect;
+  const PatientsScreen({super.key, this.selectMode = false, this.onSelect});
 
   @override
   State<PatientsScreen> createState() => _PatientsScreenState();
@@ -119,6 +121,11 @@ class _PatientsScreenState extends State<PatientsScreen> {
                                     (index) => PatientCard(
                                       managePatientBloc: managePatientsBloc,
                                       patientDetails: state.patients[index],
+                                      selectMode: widget.selectMode,
+                                      onSelectPressed: () {
+                                        widget.onSelect
+                                            ?.call(state.patients[index]);
+                                      },
                                     ),
                                   ),
                                 ),

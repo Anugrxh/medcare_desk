@@ -11,10 +11,14 @@ import 'add_patient_dialog.dart';
 class PatientCard extends StatelessWidget {
   final Map<String, dynamic> patientDetails;
   final ManagePatientsBloc managePatientBloc;
+  final bool selectMode;
+  final Function()? onSelectPressed;
   const PatientCard({
     super.key,
     required this.patientDetails,
     required this.managePatientBloc,
+    this.onSelectPressed,
+    this.selectMode = false,
   });
 
   @override
@@ -135,19 +139,30 @@ class PatientCard extends StatelessWidget {
                 height: 20,
                 color: Color.fromARGB(66, 176, 176, 176),
               ),
-              CustomActionButton(
-                iconData: Icons.arrow_outward,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PatientDetailsScreen(
-                        patientDetails: patientDetails,
-                      ),
-                    ),
-                  );
-                },
-                label: 'Appointments',
-              ),
+              !selectMode
+                  ? CustomActionButton(
+                      iconData: Icons.arrow_outward,
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PatientDetailsScreen(
+                              patientDetails: patientDetails,
+                            ),
+                          ),
+                        );
+                      },
+                      label: 'Appointments',
+                    )
+                  : const SizedBox(),
+              selectMode
+                  ? CustomActionButton(
+                      iconData: Icons.done,
+                      onPressed: () {
+                        onSelectPressed?.call();
+                      },
+                      label: 'Select',
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 import '../../util/get_next_available_time_block.dart';
 import '../../util/get_number_of_10_minute_blocks.dart';
@@ -144,67 +145,77 @@ class _CustomSchedulerState extends State<CustomScheduler> {
               ),
             ),
             Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    selectedDate == null
-                        ? 'Select Date to check availability'
-                        : getNextAvailableTimeBlock(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      selectedDate == null
+                          ? 'Select Date to check availability'
+                          : getNextAvailableTimeBlock(
+                                    selectedDate!,
+                                    widget.timeFrom,
+                                    widget.timeTo,
+                                    takenSlots(selectedDate!),
+                                  ) !=
+                                  null
+                              ? 'Next Available Slot'
+                              : 'No slots available for the date, choose a different date.',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: selectedDate != null &&
+                                    getNextAvailableTimeBlock(
+                                          selectedDate!,
+                                          widget.timeFrom,
+                                          widget.timeTo,
+                                          takenSlots(selectedDate!),
+                                        ) !=
+                                        null
+                                ? Colors.black54
+                                : Colors.red,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    selectedDate != null &&
+                            getNextAvailableTimeBlock(
+                                  selectedDate!,
                                   widget.timeFrom,
                                   widget.timeTo,
                                   takenSlots(selectedDate!),
                                 ) !=
                                 null
-                            ? 'Next Available Slot'
-                            : 'No slots available for the date, choose a different date.',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: selectedDate != null &&
-                                  getNextAvailableTimeBlock(
-                                        widget.timeFrom,
-                                        widget.timeTo,
-                                        takenSlots(selectedDate!),
-                                      ) !=
-                                      null
-                              ? Colors.black54
-                              : Colors.red,
-                        ),
-                  ),
-                  const SizedBox(height: 10),
-                  selectedDate != null &&
-                          getNextAvailableTimeBlock(
-                                widget.timeFrom,
-                                widget.timeTo,
-                                takenSlots(selectedDate!),
-                              ) !=
-                              null
-                      ? Text(
-                          getNextAvailableTimeBlock(
-                            widget.timeFrom,
-                            widget.timeTo,
-                            takenSlots(selectedDate!),
-                          )!
-                              .format(context),
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge
-                              ?.copyWith(
-                                color: Colors.black,
-                              ),
-                        )
-                      : const SizedBox(),
-                  const SizedBox(height: 10),
-                  selectedDate != null
-                      ? Text(
-                          DateFormat('d MMMM yyyy').format(selectedDate!),
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: Colors.black54,
-                                  ),
-                        )
-                      : const SizedBox(),
-                ],
+                        ? Text(
+                            getNextAvailableTimeBlock(
+                              selectedDate!,
+                              widget.timeFrom,
+                              widget.timeTo,
+                              takenSlots(selectedDate!),
+                            )!
+                                .format(context),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(
+                                  color: Colors.black,
+                                ),
+                          )
+                        : const SizedBox(),
+                    const SizedBox(height: 10),
+                    selectedDate != null
+                        ? Text(
+                            DateFormat('d MMMM yyyy').format(selectedDate!),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Colors.black54,
+                                ),
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
               ),
             ),
           ],
@@ -213,6 +224,7 @@ class _CustomSchedulerState extends State<CustomScheduler> {
       primaryOnPressed: () {
         if (selectedDate != null) {
           TimeOfDay? bookingTime = getNextAvailableTimeBlock(
+            selectedDate!,
             widget.timeFrom,
             widget.timeTo,
             takenSlots(selectedDate!),
@@ -226,6 +238,8 @@ class _CustomSchedulerState extends State<CustomScheduler> {
               bookingTime.hour,
               bookingTime.minute,
             );
+
+            Navigator.of(context).pop(bookingDateTime);
           } else {
             showDialog(
               context: context,
