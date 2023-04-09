@@ -83,20 +83,57 @@ class AppointmentCard extends StatelessWidget {
                 height: 15,
                 color: Color.fromARGB(66, 176, 176, 176),
               ),
-              Text(
-                'Age & Gender',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Colors.black45,
-                      fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Age & Gender',
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    color: Colors.black45,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '${getAge(DateTime.parse(appointmentDetails['doctor_dob'].toString()))}  ${appointmentDetails['doctor_sex']}',
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
                     ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                '${getAge(DateTime.parse(appointmentDetails['doctor_dob'].toString()))}  ${appointmentDetails['doctor_sex']}',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Fee',
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    color: Colors.black45,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          appointmentDetails['doctor_fee'].toString(),
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
                     ),
+                  ),
+                ],
               ),
               const Divider(
                 height: 15,

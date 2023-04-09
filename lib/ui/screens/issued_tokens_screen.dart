@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medcare_desk/blocs/doctor_appointments/doctor_appointments_bloc.dart';
+import 'package:medcare_desk/ui/screens/patient_details_screen.dart';
 
 import '../../util/get_age.dart';
 import '../widgets/custom_action_button.dart';
@@ -172,7 +173,15 @@ class _IssuedTokensScreenState extends State<IssuedTokensScreen> {
                   currentToken != null
                       ? CustomActionButton(
                           iconData: Icons.arrow_outward,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PatientDetailsScreen(
+                                  patientDetails: currentToken!['patient'],
+                                ),
+                              ),
+                            );
+                          },
                           label: 'Patient Details',
                         )
                       : const SizedBox(),

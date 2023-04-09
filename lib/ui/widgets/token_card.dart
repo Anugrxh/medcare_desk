@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../util/get_age.dart';
+import '../screens/patient_details_screen.dart';
 import 'custom_action_button.dart';
 import 'custom_card.dart';
 
@@ -89,7 +90,15 @@ class TokenCard extends StatelessWidget {
                   Expanded(
                     child: CustomActionButton(
                       iconData: Icons.arrow_outward,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PatientDetailsScreen(
+                              patientDetails: tokenDetails['patient'],
+                            ),
+                          ),
+                        );
+                      },
                       label: 'Patient Details',
                     ),
                   ),
