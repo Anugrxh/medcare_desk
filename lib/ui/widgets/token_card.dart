@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../util/get_age.dart';
 import 'custom_action_button.dart';
 import 'custom_card.dart';
 
 class TokenCard extends StatelessWidget {
+  final Map<String, dynamic> tokenDetails;
+  final Function() onDeletePressed;
   const TokenCard({
     super.key,
+    required this.tokenDetails,
+    required this.onDeletePressed,
   });
 
   @override
@@ -28,7 +33,7 @@ class TokenCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '#432342',
+                          '#${tokenDetails['patient']['id']}',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Colors.black45,
@@ -37,7 +42,7 @@ class TokenCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          'Patient Name',
+                          tokenDetails['patient']['name'],
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Colors.black,
@@ -49,7 +54,7 @@ class TokenCard extends StatelessWidget {
                           endIndent: 150,
                         ),
                         Text(
-                          '23 Female',
+                          '${getAge(DateTime.parse(tokenDetails['patient']['dob'].toString()))}  ${tokenDetails['patient']['sex']}',
                           style:
                               Theme.of(context).textTheme.titleSmall?.copyWith(
                                     color: Colors.black54,
@@ -60,7 +65,7 @@ class TokenCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '20',
+                    tokenDetails['number'].toString(),
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -72,10 +77,23 @@ class TokenCard extends StatelessWidget {
                 height: 20,
                 color: Color.fromARGB(66, 176, 176, 176),
               ),
-              CustomActionButton(
-                iconData: Icons.arrow_outward,
-                onPressed: () {},
-                label: 'Patient Details',
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: onDeletePressed,
+                    icon: const Icon(
+                      Icons.delete_forever_outlined,
+                      color: Colors.red,
+                    ),
+                  ),
+                  Expanded(
+                    child: CustomActionButton(
+                      iconData: Icons.arrow_outward,
+                      onPressed: () {},
+                      label: 'Patient Details',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

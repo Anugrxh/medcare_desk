@@ -30,9 +30,38 @@ class DoctorAppointmentsBloc
               )) ??
               [];
 
+          DateTime currentDate = DateTime.now();
+
           List<Map<String, dynamic>> appointments = temp.map((e) {
             Map<String, dynamic> element = e as Map<String, dynamic>;
+            element['issued_tokens'] = 0;
+            element['called_tokens'] = 0;
 
+            List<DateTime> bookedDateTimes = [];
+            List<Map<String, dynamic>> tokens = [];
+
+            for (int i = 0; i < element['tokens'].length; i++) {
+              DateTime bookingDateTime =
+                  DateTime.parse(element['tokens'][i]['booking_date_time']);
+              String status = element['tokens'][i]['status'];
+
+              bookedDateTimes.add(bookingDateTime);
+
+              if (currentDate.year == bookingDateTime.year &&
+                  currentDate.month == bookingDateTime.month &&
+                  currentDate.day == bookingDateTime.day) {
+                element['issued_tokens']++;
+                if (!(status == 'pending')) {
+                  element['called_tokens']++;
+                }
+              }
+
+              tokens.add(element['tokens'][i] as Map<String, dynamic>);
+            }
+
+            element['tokens'] = tokens;
+
+            element['booked_date_times'] = bookedDateTimes;
             return element;
           }).toList();
 

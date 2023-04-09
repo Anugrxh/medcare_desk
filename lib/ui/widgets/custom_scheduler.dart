@@ -80,10 +80,10 @@ class _CustomSchedulerState extends State<CustomScheduler> {
                   double availability = slotAvailability(dates[index]);
                   Color availabilityColor = Colors.green;
 
-                  if (availability > .5) {
-                    availabilityColor = Colors.orange;
-                  } else if (availability > .9) {
+                  if (availability > .9) {
                     availabilityColor = Colors.red;
+                  } else if (availability > .5) {
+                    availabilityColor = Colors.orange;
                   }
 
                   return CustomCard(

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medcare_desk/blocs/doctor_appointments/doctor_appointments_bloc.dart';
+import 'package:medcare_desk/ui/screens/issued_tokens_screen.dart';
+import 'package:medcare_desk/ui/widgets/custom_alert_dialog.dart';
 
+import '../../../util/get_age.dart';
+import '../../../util/get_number_of_10_minute_blocks.dart';
+import '../../../util/postgres_time_to_time_of_day.dart';
 import '../custom_action_button.dart';
 import '../custom_card.dart';
 import 'new_appointment_dialog.dart';
@@ -35,7 +40,7 @@ class AppointmentCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Department',
+                          appointmentDetails['department_name'],
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Colors.black45,
@@ -44,7 +49,7 @@ class AppointmentCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          'Dr. Some Appointment',
+                          appointmentDetails['doctor_name'],
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Colors.black,
@@ -87,7 +92,7 @@ class AppointmentCard extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                '28 Male',
+                '${getAge(DateTime.parse(appointmentDetails['doctor_dob'].toString()))}  ${appointmentDetails['doctor_sex']}',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -122,7 +127,7 @@ class AppointmentCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              '20',
+                              appointmentDetails['called_tokens'].toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -170,7 +175,7 @@ class AppointmentCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              '100',
+                              appointmentDetails['issued_tokens'].toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -206,7 +211,12 @@ class AppointmentCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          '100',
+                          getNumberOf10MinuteBlocks(
+                                  convertPostgresTimeToTimeOfDay(
+                                      appointmentDetails['doctor_time_from']),
+                                  convertPostgresTimeToTimeOfDay(
+                                      appointmentDetails['doctor_time_to']))
+                              .toString(),
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Colors.black,
@@ -218,7 +228,16 @@ class AppointmentCard extends StatelessWidget {
                   ),
                   CustomActionButton(
                     iconData: Icons.arrow_outward_sharp,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => IssuedTokensScreen(
+                            appointmentDetails: appointmentDetails,
+                            appointmentsBloc: appointmentsBloc,
+                          ),
+                        ),
+                      );
+                    },
                     label: 'View issued tokens',
                   ),
                 ],

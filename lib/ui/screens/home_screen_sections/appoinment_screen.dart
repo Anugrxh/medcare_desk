@@ -88,6 +88,16 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               search();
                             },
                           ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomActionButton(
+                            iconData: Icons.replay_outlined,
+                            onPressed: () {
+                              search();
+                            },
+                            label: 'Refresh',
+                          ),
                         ],
                       ),
                     ),

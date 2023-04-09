@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:medcare_desk/blocs/doctor_appointments/doctor_appointments_bloc.dart';
+import 'package:medcare_desk/util/postgres_time_to_time_of_day.dart';
 
 import '../../screens/patient_selector_screen.dart';
 import '../custom_alert_dialog.dart';
@@ -44,10 +47,13 @@ class _NewAppointmentDialogState extends State<NewAppointmentDialog> {
             onPressed: () async {
               selectedDateTime = await showDialog(
                 context: context,
-                builder: (context) => const CustomScheduler(
-                  booked: [],
-                  timeFrom: TimeOfDay(hour: 10, minute: 30),
-                  timeTo: TimeOfDay(hour: 15, minute: 30),
+                builder: (context) => CustomScheduler(
+                  offDay: widget.appointment['doctor_off_day'],
+                  booked: widget.appointment['booked_date_times'],
+                  timeFrom: convertPostgresTimeToTimeOfDay(
+                      widget.appointment['doctor_time_from']),
+                  timeTo: convertPostgresTimeToTimeOfDay(
+                      widget.appointment['doctor_time_to']),
                 ),
               );
               setState(() {});
@@ -78,7 +84,28 @@ class _NewAppointmentDialogState extends State<NewAppointmentDialog> {
         ],
       ),
       primaryButtonLabel: 'Book',
-      primaryOnPressed: () {},
+      primaryOnPressed: () {
+        if (selectedDateTime != null && selectedPatient != null) {
+          BlocProvider.of<DoctorAppointmentsBloc>(context).add(
+            AddDoctorAppointmentEvent(
+              number: (widget.appointment['issued_tokens'] + 1),
+              patientId: selectedPatient!['id'],
+              doctorId: widget.appointment['doctor_user_id'],
+              bookedDateTime: selectedDateTime!,
+            ),
+          );
+          Navigator.pop(context);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => const CustomAlertDialog(
+              title: 'Required!',
+              message: 'Select booking date time and patient to continue',
+              primaryButtonLabel: 'Ok',
+            ),
+          );
+        }
+      },
     );
   }
 }
