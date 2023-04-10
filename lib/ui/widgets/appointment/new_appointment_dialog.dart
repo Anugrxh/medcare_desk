@@ -24,6 +24,22 @@ class _NewAppointmentDialogState extends State<NewAppointmentDialog> {
   Map<String, dynamic>? selectedPatient;
   DateTime? selectedDateTime;
 
+  int getNextTokenNumber() {
+    int nextTokenNumber = 1;
+    if (selectedDateTime != null) {
+      for (int i = 0; i < widget.appointment['booked_date_times'].length; i++) {
+        DateTime bookedDate = widget.appointment['booked_date_times'][i];
+        if (selectedDateTime!.year == bookedDate.year &&
+            selectedDateTime!.month == bookedDate.month &&
+            selectedDateTime!.day == bookedDate.day) {
+          nextTokenNumber++;
+        }
+      }
+    }
+
+    return nextTokenNumber;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomAlertDialog(
@@ -88,7 +104,7 @@ class _NewAppointmentDialogState extends State<NewAppointmentDialog> {
         if (selectedDateTime != null && selectedPatient != null) {
           BlocProvider.of<DoctorAppointmentsBloc>(context).add(
             AddDoctorAppointmentEvent(
-              number: (widget.appointment['issued_tokens'] + 1),
+              number: getNextTokenNumber(),
               patientId: selectedPatient!['id'],
               doctorId: widget.appointment['doctor_user_id'],
               bookedDateTime: selectedDateTime!,

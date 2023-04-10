@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../util/get_age.dart';
 import '../screens/patient_details_screen.dart';
@@ -25,6 +26,7 @@ class TokenCard extends StatelessWidget {
             vertical: 10,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,6 +75,26 @@ class TokenCard extends StatelessWidget {
                         ),
                   ),
                 ],
+              ),
+              const Divider(
+                height: 20,
+                color: Color.fromARGB(66, 176, 176, 176),
+              ),
+              Text(
+                'Booking Date Time',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.black45,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                DateFormat('dd/MM/yyyy hh:mm a')
+                    .format(DateTime.parse(tokenDetails['booking_date_time'])),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const Divider(
                 height: 20,
