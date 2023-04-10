@@ -27,7 +27,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       const Duration(
         milliseconds: 100,
       ),
-      () {
+      () async {
         if (Supabase.instance.client.auth.currentUser == null) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -35,6 +35,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             (route) => true,
           );
+        } else {
+          AuthResponse res =
+              await Supabase.instance.client.auth.refreshSession();
+
+          if (res.user != null &&
+              res.user!.userMetadata!['status'] != 'active') {
+            await Supabase.instance.client.auth.signOut();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const Login(),
+              ),
+              (route) => true,
+            );
+          }
         }
       },
     );
