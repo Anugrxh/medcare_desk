@@ -26,7 +26,7 @@ class PatientAppointmentCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '#${patientAppointmentDetails['id']}',
+                '#${patientAppointmentDetails['token_id']}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.black45,
                       fontWeight: FontWeight.bold,

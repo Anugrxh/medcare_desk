@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../blocs/dashbord/bloc/dashboard_count_bloc.dart';
+import '../../../blocs/dashbord/dashboard_count/dashboard_count_bloc.dart';
 import '../../../blocs/dashbord/doctors_token_count/doctors_token_count_bloc.dart';
 import '../../widgets/custom_action_button.dart';
 import '../../widgets/custom_alert_dialog.dart';
