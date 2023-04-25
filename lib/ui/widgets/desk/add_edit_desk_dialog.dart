@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medcare_desk/util/value_validators.dart';
 
 import '../../../blocs/desk/desk_bloc.dart';
 import '../custom_button.dart';
@@ -120,13 +121,7 @@ class _AddEditDeskDialogState extends State<AddEditDeskDialog> {
                 CustomCard(
                   child: TextFormField(
                     controller: _nameController,
-                    validator: (value) {
-                      if (value != null && value.trim().isNotEmpty) {
-                        return null;
-                      } else {
-                        return 'Please enter Name';
-                      }
-                    },
+                    validator: alphanumericWithSpaceValidator,
                     decoration: const InputDecoration(
                       hintText: 'eg. Mr.John',
                     ),
@@ -147,13 +142,7 @@ class _AddEditDeskDialogState extends State<AddEditDeskDialog> {
                 CustomCard(
                   child: TextFormField(
                     controller: _emailController,
-                    validator: (value) {
-                      if (value != null && value.trim().isNotEmpty) {
-                        return null;
-                      } else {
-                        return 'Please enter Email';
-                      }
-                    },
+                    validator: emailValidator,
                     decoration: const InputDecoration(
                       hintText: 'eg.deskuser@medcare.com',
                     ),
@@ -175,14 +164,11 @@ class _AddEditDeskDialogState extends State<AddEditDeskDialog> {
                   child: TextFormField(
                     obscureText: _isObscure,
                     controller: _passwordController,
-                    validator: (value) {
-                      if ((value != null && value.trim().isNotEmpty) ||
-                          widget.deskDetails != null) {
-                        return null;
-                      } else {
-                        return 'Please enter passsword';
-                      }
-                    },
+                    validator: widget.deskDetails != null
+                        ? (value) {
+                            return null;
+                          }
+                        : passwordValidator,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -214,13 +200,7 @@ class _AddEditDeskDialogState extends State<AddEditDeskDialog> {
                 CustomCard(
                   child: TextFormField(
                     controller: _phoneNumberController,
-                    validator: (value) {
-                      if (value != null && value.trim().isNotEmpty) {
-                        return null;
-                      } else {
-                        return 'Please enter Phone';
-                      }
-                    },
+                    validator: phoneNumberValidator,
                     decoration: const InputDecoration(
                       hintText: 'eg. 9876543210',
                     ),
